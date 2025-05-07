@@ -29,7 +29,10 @@
  * -------------------
  */
 
-
+/*
+ * Bitmap adjustments are column referenced.
+ * Bit addressing is done as vertical addressing.
+ */
 uint8_t Char_Bitmap[26][6] =
 {
 	//Bitmap of [SPACE] character

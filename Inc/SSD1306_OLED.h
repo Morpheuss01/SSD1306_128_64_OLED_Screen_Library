@@ -21,6 +21,8 @@ extern I2C_HandleTypeDef hi2c1;
 #define OLED_ADDR		0x3C
 #define OLED_ADDR_WRITE	(OLED_ADDR << 1)
 
+#define I2C_MEM_ADDR_SIZE	0x01U
+
 /*
  * Command and Data Identifier Definitions
  */
@@ -38,6 +40,138 @@ extern I2C_HandleTypeDef hi2c1;
 #define SET_PAGE_5	0x05
 #define SET_PAGE_6	0x06
 #define SET_PAGE_7	0x07
+
+/*
+ * Column Definitions
+ */
+#define SET_COL_0	0x00
+#define SET_COL_1	0x01
+#define SET_COL_2	0x02
+#define SET_COL_3	0x03
+#define SET_COL_4	0x04
+#define SET_COL_5	0x05
+#define SET_COL_6	0x06
+#define SET_COL_7	0x07
+#define SET_COL_8	0x08
+#define SET_COL_9	0x09
+#define SET_COL_10	0x0A
+#define SET_COL_11	0x0B
+#define SET_COL_12	0x0C
+#define SET_COL_13	0x0D
+#define SET_COL_14	0x0E
+#define SET_COL_15	0x0F
+#define SET_COL_16	0x10
+#define SET_COL_17	0x11
+#define SET_COL_18	0x12
+#define SET_COL_19	0x13
+#define SET_COL_20	0x14
+#define SET_COL_21	0x15
+#define SET_COL_22	0x16
+#define SET_COL_23	0x17
+#define SET_COL_24	0x18
+#define SET_COL_25	0x19
+#define SET_COL_26	0x1A
+#define SET_COL_27	0x1B
+#define SET_COL_28	0x1C
+#define SET_COL_29	0x1D
+#define SET_COL_30	0x1E
+#define SET_COL_31	0x1F
+#define SET_COL_32	0x20
+#define SET_COL_33	0x21
+#define SET_COL_34	0x22
+#define SET_COL_35	0x23
+#define SET_COL_36	0x24
+#define SET_COL_37	0x25
+#define SET_COL_38	0x26
+#define SET_COL_39	0x27
+#define SET_COL_40	0x28
+#define SET_COL_41	0x29
+#define SET_COL_42	0x2A
+#define SET_COL_43	0x2B
+#define SET_COL_44	0x2C
+#define SET_COL_45	0x2D
+#define SET_COL_46	0x2E
+#define SET_COL_47	0x2F
+#define SET_COL_48	0x30
+#define SET_COL_49	0x31
+#define SET_COL_50	0x32
+#define SET_COL_51	0x33
+#define SET_COL_52	0x34
+#define SET_COL_53	0x35
+#define SET_COL_54	0x36
+#define SET_COL_55	0x37
+#define SET_COL_56	0x38
+#define SET_COL_57	0x39
+#define SET_COL_58	0x3A
+#define SET_COL_59	0x3B
+#define SET_COL_60	0x3C
+#define SET_COL_61	0x3D
+#define SET_COL_62	0x3E
+#define SET_COL_63	0x3F
+#define SET_COL_64	0x40
+#define SET_COL_65	0x41
+#define SET_COL_66	0x42
+#define SET_COL_67	0x43
+#define SET_COL_68	0x44
+#define SET_COL_69	0x45
+#define SET_COL_70	0x46
+#define SET_COL_71	0x47
+#define SET_COL_72	0x48
+#define SET_COL_73	0x49
+#define SET_COL_74	0x4A
+#define SET_COL_75	0x4B
+#define SET_COL_76	0x4C
+#define SET_COL_77	0x4D
+#define SET_COL_78	0x4E
+#define SET_COL_79	0x4F
+#define SET_COL_80	0x50
+#define SET_COL_81	0x51
+#define SET_COL_82	0x52
+#define SET_COL_83	0x53
+#define SET_COL_84	0x54
+#define SET_COL_85	0x55
+#define SET_COL_86	0x56
+#define SET_COL_87	0x57
+#define SET_COL_88	0x58
+#define SET_COL_89	0x59
+#define SET_COL_90	0x5A
+#define SET_COL_91	0x5B
+#define SET_COL_92	0x5C
+#define SET_COL_93	0x5D
+#define SET_COL_94	0x5E
+#define SET_COL_95	0x5F
+#define SET_COL_96	0x60
+#define SET_COL_97	0x61
+#define SET_COL_98	0x62
+#define SET_COL_99	0x63
+#define SET_COL_100	0x64
+#define SET_COL_101	0x65
+#define SET_COL_102 0x66
+#define SET_COL_103	0x67
+#define SET_COL_104	0x68
+#define SET_COL_105	0x69
+#define SET_COL_106	0x6A
+#define SET_COL_107	0x6B
+#define SET_COL_108	0x6C
+#define SET_COL_109	0x6D
+#define SET_COL_110	0x6E
+#define SET_COL_111	0x6F
+#define SET_COL_112	0x70
+#define SET_COL_113	0x71
+#define SET_COL_114	0x72
+#define SET_COL_115	0x73
+#define SET_COL_116	0x74
+#define SET_COL_117	0x75
+#define SET_COL_118	0x76
+#define SET_COL_119	0x77
+#define SET_COL_120	0x78
+#define SET_COL_121	0x79
+#define SET_COL_122	0x7A
+#define SET_COL_123	0x7B
+#define SET_COL_124	0x7C
+#define SET_COL_125	0x7D
+#define SET_COL_126	0x7E
+#define SET_COL_127	0x7F
 
 /*
  * Frame Interval Definitions
@@ -122,6 +256,7 @@ extern I2C_HandleTypeDef hi2c1;
 /*
  * Lower Or Higher Column Start Address Nibbles Definitions for Page Addressing Mode
  */
+/*
 #define SET_COLUMN_START_ADDR_LOW_NIB_00	0x00
 #define SET_COLUMN_START_ADDR_LOW_NIB_01	0x01
 #define SET_COLUMN_START_ADDR_LOW_NIB_02	0x02
@@ -155,6 +290,7 @@ extern I2C_HandleTypeDef hi2c1;
 #define SET_COLUMN_START_ADDR_HIGH_NIB_1D	0x1D
 #define SET_COLUMN_START_ADDR_HIGH_NIB_1E	0x1E
 #define SET_COLUMN_START_ADDR_HIGH_NIB_1F	0x1F
+*/
 
 
 /*
@@ -258,8 +394,8 @@ extern I2C_HandleTypeDef hi2c1;
 #define CMD_CONTRAST_CTRL		0x81
 #define CMD_DISP_ON				0xAF
 #define CMD_DISP_OFF			0xAE
-#define CMD_ENTIRE_DISP_ON		0xA4
-#define CMD_ENTIRE_DISP_RAM		0xA5
+#define CMD_ENTIRE_DISP_NOT_ON	0xA4
+#define CMD_ENTIRE_DISP_ON		0xA5
 #define CMD_NOT_INV_DISP		0xA6
 #define CMD_INV_DISP			0xA7
 
@@ -364,13 +500,13 @@ extern I2C_HandleTypeDef hi2c1;
 #define CMD_DISPLAY_START_LINE_SET_62		0x7E
 #define CMD_DISPLAY_START_LINE_SET_63		0X7F
 
-#define CMD_SEGMENT_REMAP_TO_RIGHT_DEFAULT	0xA0
+#define CMD_SEGMENT_REMAP_TO_RIGHT			0xA0
 #define CMD_SEGMENT_REMAP_TO_LEFT			0xA1
 
 #define CMD_MULTIPLEX_RATIO					0xA8
 
-#define CMD_COM_OPUT_SCAN_DIR_DOWN			0xC0
-#define CMD_COM_OPUT_SCAN_DIR_UP			0xC8
+#define CMD_COM_OPUT_SCAN_DIR_TO_DOWN		0xC0
+#define CMD_COM_OPUT_SCAN_DIR_TO_UP			0xC8
 
 #define CMD_DISPLAY_OFFSET					0xD3
 
@@ -390,12 +526,25 @@ extern I2C_HandleTypeDef hi2c1;
 /*
  * Function Prototypes
  */
-void OLED_Display_Init(void);
-void OLED_WriteCommand(uint8_t Data);
+void OLED_DisplayInit(void);
+void OLED_WriteCommand(uint8_t data);
 void OLED_FillScreen(uint8_t color);
-void SSD1306_WriteData(uint8_t* data, uint16_t size);
-void SSD1306_WriteChar(char Char);
-
+void OLED_WriteData(uint8_t* data, uint16_t size);
+void OLED_WriteChar(char character);
+void OLED_DisplayOFF(void);
+void OLED_DisplayON(void);
+void OLED_SetMemAddrMode(uint8_t mem_addr_mode);
+void OLED_SetPageAddrMode(uint8_t page_no, uint8_t column_no);
+void OLED_SetColumnAddr(uint8_t start_col, uint8_t end_col);
+void OLED_SetPageAddr(uint8_t page_start_addr, uint8_t page_end_addr);
+void OLED_SetDispStartLine(uint8_t disp_start_line);
+void OLED_SetContrast(uint8_t eight_bit_cont_val);
+void OLED_SetSegmentRemap(uint8_t secreen_refresh_direction);
+void OLED_SetEntireDisp(uint8_t entire_disp_on_or_not);
+void OLED_SetNormInvDisp(uint8_t disp_norm_or_inv);
+void OLED_SetDataLineNo(uint8_t line_no);
+void OLED_SetCOMOutScanDir(uint8_t com_scan_direction);
+void OLED_SetDisplayOffset(uint8_t set_line_no);
 
 /*
  * Generic Macros
