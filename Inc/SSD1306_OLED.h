@@ -23,6 +23,8 @@ extern I2C_HandleTypeDef hi2c1;
 
 #define I2C_MEM_ADDR_SIZE	0x01U
 
+#define OLED_SCREEN_WIDTH	128
+
 /*
  * Command and Data Identifier Definitions
  */
@@ -529,8 +531,9 @@ extern I2C_HandleTypeDef hi2c1;
 void OLED_DisplayInit(void);
 void OLED_WriteCommand(uint8_t data);
 void OLED_FillScreen(uint8_t color);
-void OLED_WriteData(uint8_t* data, uint16_t size);
+void OLED_WriteData(uint8_t* data);
 void OLED_WriteChar(char character);
+void OLED_WriteScreen(char* str, uint8_t str_size);
 void OLED_DisplayOFF(void);
 void OLED_DisplayON(void);
 void OLED_SetMemAddrMode(uint8_t mem_addr_mode);
@@ -545,6 +548,8 @@ void OLED_SetNormInvDisp(uint8_t disp_norm_or_inv);
 void OLED_SetDataLineNo(uint8_t line_no);
 void OLED_SetCOMOutScanDir(uint8_t com_scan_direction);
 void OLED_SetDisplayOffset(uint8_t set_line_no);
+void OLED_SetCursor(uint8_t page_no, uint8_t column_no);
+uint8_t OLED_GetRemainingColumns(uint8_t current_col);
 
 /*
  * Generic Macros

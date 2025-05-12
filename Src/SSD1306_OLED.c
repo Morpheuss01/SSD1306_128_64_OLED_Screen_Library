@@ -15,9 +15,11 @@
  *	Ekranın sol üst köşesinden yazı yazdırmaya başlamak için scan direction
  *	ve segment re-map ayarları değiştirilmeli
  *
+ *	Bitmap konfigürasyonunu 8x8 olacak şekilde yeniden düzenle!
+ *
  */
 
-extern uint8_t Char_Bitmap[26][6];
+extern uint8_t Char_Bitmap[27][8];
 
 
 void OLED_WriteCommand(uint8_t Command)
@@ -29,9 +31,12 @@ void OLED_WriteCommand(uint8_t Command)
 	HAL_I2C_Master_Transmit(OLED_I2C, OLED_ADDR_WRITE, data, 2, HAL_MAX_DELAY);
 }
 
-void OLED_WriteData(uint8_t* data, uint16_t size) {
-    uint8_t control_reg = OLED_DATA_ID; // Co = 0, D/C# = 1 (veri)
-    HAL_I2C_Mem_Write(OLED_I2C, OLED_ADDR_WRITE, control_reg, I2C_MEM_ADDR_SIZE, data, size, HAL_MAX_DELAY);
+void OLED_WriteData(uint8_t* data) {
+    uint8_t Data[2] = {0, 0}; // Co = 0, D/C# = 1 (veri)
+    Data[0] = OLED_DATA_ID;
+    Data[1] = *data;
+
+    HAL_I2C_Master_Transmit(OLED_I2C, OLED_ADDR_WRITE, Data, 2, HAL_MAX_DELAY);
 }
 
 void OLED_DisplayOFF(void)
@@ -151,55 +156,68 @@ void OLED_SetDisplayOffset(uint8_t set_line_no)
 	OLED_WriteCommand(line_no);			//Configuration sent
 }
 
+/*
+ * Display initialization function
+ */
 void OLED_DisplayInit(void)
 {
-    OLED_WriteCommand(0xAE); // Display OFF
+		HAL_Delay(100);
+	    OLED_WriteCommand(0xAE); // Display OFF
 
-    OLED_WriteCommand(0x20); // Set Memory Addressing Mode
-    OLED_WriteCommand(0x00); // Horizontal Addressing Mode
+	    OLED_WriteCommand(0x20); // Set Memory Addressing Mode
+	    OLED_WriteCommand(0x00); // Horizontal Addressing Mode
 
-    OLED_WriteCommand(0xB0); // Set Page Start Address for Page Addressing Mode
+	    OLED_WriteCommand(0x21); // Set Column Address
+	    OLED_WriteCommand(0x00); // Column start
+	    OLED_WriteCommand(0x7F); // Column end
 
-    OLED_WriteCommand(0xC8); // COM Output Scan Direction changed
-    OLED_WriteCommand(0x00); // Low column address
-    OLED_WriteCommand(0x10); // High column address
+	    OLED_WriteCommand(0x22); //Set page start address
+	    OLED_WriteCommand(0x00); // Start address
+	    OLED_WriteCommand(0x07); // End address
 
-    OLED_WriteCommand(0x40); // Set start line address
+	    OLED_WriteCommand(0xC8); // COM Output Scan Direction
+	    OLED_WriteCommand(0x00); // Low column address
+	    OLED_WriteCommand(0x10); // High column address
 
-    OLED_WriteCommand(0x81); // Set contrast control
-    OLED_WriteCommand(0x7F);
+	    OLED_WriteCommand(0x40); // Set start line address
 
-    OLED_WriteCommand(0xA1); // Segment re-mapped
-    OLED_WriteCommand(0xA6); // Normal display
+	    OLED_WriteCommand(0x81); // Set contrast control
+	    OLED_WriteCommand(0x7F);
 
-    OLED_WriteCommand(0xA8); // Set multiplex ratio(1 to 64)
-    OLED_WriteCommand(0x3F);
+	    OLED_WriteCommand(0xA1); // Set segment re-mapped 0 to 127
+	    OLED_WriteCommand(0xA6); // Normal display
 
-    OLED_WriteCommand(0xA4); // Output follows RAM content
+	    OLED_WriteCommand(0xA8); // Set multiplex ratio(1 to 64)
+	    OLED_WriteCommand(0x3F);
 
-    OLED_WriteCommand(0xD3); // Set display offset
-    OLED_WriteCommand(0x00); // No offset
+	    OLED_WriteCommand(0xA4); // Output follows RAM content
 
-    OLED_WriteCommand(0xD5); // Set display clock divide ratio/oscillator frequency
-    OLED_WriteCommand(0xF0); // Set divide ratio
+	    OLED_WriteCommand(0xD3); // Set display offset
+	    OLED_WriteCommand(0x00); // No offset
 
-    OLED_WriteCommand(0xD9); // Set pre-charge period
-    OLED_WriteCommand(0x22);
+	    OLED_WriteCommand(0xD5); // Set display clock divide ratio/oscillator frequency
+	    OLED_WriteCommand(0xF0); // Set divide ratio
 
-    OLED_WriteCommand(0xDA); // Set com pins hardware configuration
-    OLED_WriteCommand(0x12);
+	    OLED_WriteCommand(0xD9); // Set pre-charge period
+	    OLED_WriteCommand(0x22);
 
-    OLED_WriteCommand(0xA6); //The pixels in the ram content are not inverted (normal mode)
+	    OLED_WriteCommand(0xDA); // Set com pins hardware configuration
+	    OLED_WriteCommand(0x12);
 
-    OLED_WriteCommand(0xDB); // Set vcomh
-    OLED_WriteCommand(0x20);
+	    OLED_WriteCommand(0xA6); //The pixels in the ram content are not inverted (normal mode)
 
-    OLED_WriteCommand(0x8D); // Enable charge pump regulator
-    OLED_WriteCommand(0x14);
+	    OLED_WriteCommand(0xDB); // Set vcomh
+	    OLED_WriteCommand(0x20);
 
-    OLED_WriteCommand(0xAF); // Display ON
+	    OLED_WriteCommand(0x8D); // Enable charge pump regulator
+	    OLED_WriteCommand(0x14);
+
+	    OLED_WriteCommand(0xAF); // Display ON
 }
 
+/*
+ * Screen black/white pixel filling function
+ */
 void OLED_FillScreen(uint8_t color)
 {
     for(uint8_t page = 0; page < 8; page++)
@@ -219,25 +237,79 @@ void OLED_FillScreen(uint8_t color)
     }
 }
 
+/*
+ * Getting Current Column Information Function
+ */
+uint8_t OLED_GetRemainingColumns(uint8_t current_col)
+{
+	if(!(current_col <= OLED_SCREEN_WIDTH))
+	{
+		Error_Handler();
+	}
+	return (OLED_SCREEN_WIDTH - current_col);
+}
+
+/*
+ * Character writing function
+ */
 void OLED_WriteChar(char character)
 {
-//	if((Char != 32) || Char < 65 || Char > 90) return;
-
 	uint8_t index = 0;
+	uint8_t B_let_col_size = 1;
+	uint8_t S_let_col_size = 1;
+	uint8_t current_col = 0;
+	uint8_t rem_col = 0;
+	uint8_t data = 0x00;
 
-	if(character != 32)
-	{
-		index = character - 64;
-	}
 
-	else if(character == 32)
+	//Geçerli karakter olup olmadığı kontrolü yapılır ve indeks yazılabilir karakterden başlar
+	if(character >= 32 && character <= 126)
 	{
 		index = character - 32;
 	}
-
-	for(uint8_t i = 0; i<6; i++)
+	else
 	{
-		OLED_WriteData(&Char_Bitmap[index][i], sizeof(Char_Bitmap[index][i]));
+		Error_Handler();
 	}
 
+	if(character != '"')
+	{
+		for(uint8_t i=0; i<8; i++)
+		{
+		  	OLED_WriteData(&Char_Bitmap[index][i]);					   // Bulunulan noktadan itibaren ekrana veri yazılır
+
+		  	if(character != ' ')
+		  	{
+			  	if(Char_Bitmap[index][i] == 0x00) break;
+		  	}
+		}
+	}
+
+  	if(character == '"')
+  	{
+  		for(uint8_t i=0; i<4; i++)
+  		{
+  		  	OLED_WriteData(&Char_Bitmap[index][i]);
+  		}
+  	}
+}
+
+/*
+ * String writing function
+ */
+void OLED_WriteScreen(char* str, uint8_t str_size)
+{
+	char letter = *str;
+
+	for(uint8_t i = 0; i<str_size; i++)
+	{
+		letter = *(str + i);
+		OLED_WriteChar(letter);
+	}
+}
+
+void OLED_SetCursor(uint8_t page_no, uint8_t column_no)
+{
+	OLED_SetColumnAddr(column_no, SET_COL_127);
+	OLED_SetPageAddr(page_no, SET_PAGE_7);
 }
